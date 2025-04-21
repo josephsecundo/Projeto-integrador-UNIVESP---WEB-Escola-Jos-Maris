@@ -2,22 +2,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "my-angular-app": {
+    "escola-web-site": {
       "projectType": "application",
-      "root": "my-angular-app",
+      "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": {
-              "base": "dist/my-angular-app"
-            },
+            "outputPath": "dist/escola-web-site",
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -26,8 +23,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "browser": "src/main.ts"
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -44,24 +40,19 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2kb",
-                  "maximumError": "5kb"
-                }
-              ]
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "my-angular-app:build"
+            "browserTarget": "escola-web-site:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "my-angular-app:build:production"
+              "browserTarget": "escola-web-site:build:production"
             }
           }
         },
@@ -96,5 +87,6 @@
   },
   "cli": {
     "analytics": "40076c1d-4013-452e-b35b-79df2021c1bd"
-  }
+  },
+  "defaultProject": "escola-web-site"
 }
