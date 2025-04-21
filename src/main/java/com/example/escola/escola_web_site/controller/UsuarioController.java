@@ -2,12 +2,16 @@ package com.example.escola.escola_web_site.controller;
 
 import com.example.escola.escola_web_site.model.UsuarioModel;
 import com.example.escola.escola_web_site.repository.UsuarioRepository;
+import com.example.escola.escola_web_site.service.EmailService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 public class UsuarioController {
@@ -37,16 +41,25 @@ public class UsuarioController {
     }
 
 
-    @GetMapping(path = "/api/usuario/{codigo}")
-    public ResponseEntity consultar(@PathVariable("codigo") Integer codigo) {
-        return repository.findById(codigo)
-                .map(record -> ResponseEntity.ok().body(record))
-                .orElse(ResponseEntity.notFound().build());
-    }
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping(path = "/api/usuario/salvar")
-    public UsuarioModel salvar(@RequestBody UsuarioModel usuario) {
-        return repository.save(usuario);
+    public ResponseEntity<String> salvar(@RequestBody UsuarioModel usuario) {
+        String token = UUID.randomUUID().toString();
+        usuario.setRegistroToken(token);
+        usuario.setTokenExpiration(LocalDateTime.now().plusHours(24)); // Token válido por 24 horas
+        usuario.setAtivo(false); // Usuário inativo até confirmar o registro
+        repository.save(usuario);
+
+        // Enviar o token por e-mail
+        String mensagem = "Olá " + usuario.getNome() + ",\n\n" +
+                "Por favor, confirme seu cadastro clicando no link abaixo:\n" +
+                "http://localhost:8081/api/usuario/validar-token?token=" + token;
+        emailService.enviarEmail(usuario.getEmail(), "Confirmação de Cadastro", mensagem);
+
+        return ResponseEntity.ok("Usuário cadastrado com sucesso! Verifique seu e-mail para confirmar o registro.");
     }
 
     @PutMapping(path = "/api/usuario/atualizar/{codigo}")
@@ -56,6 +69,7 @@ public class UsuarioController {
                     .map(record -> {
                         logger.info("Atualizando usuário com ID: {}", codigo);
                         if (usuario.getNome() != null) record.setNome(usuario.getNome());
+                        if (usuario.getEmail() != null) record.setEmail(usuario.getEmail());
                         if (usuario.getLogin() != null) record.setLogin(usuario.getLogin());
                         if (usuario.getSenha() != null) record.setSenha(usuario.getSenha());
                         UsuarioModel updated = repository.save(record);
@@ -90,6 +104,72 @@ public class UsuarioController {
         } catch (Exception e) {
             logger.error("Erro ao desativar usuário {}: {}", codigo, e.getMessage(), e);
             return ResponseEntity.status(500).body("Erro ao desativar usuário: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/api/usuario/validar-token")
+    public ResponseEntity<String> validarToken(@RequestParam String token) {
+        logger.info("Recebendo token: {}", token);
+        UsuarioModel usuario = repository.findByRegistroToken(token);
+        if (usuario != null) {
+            logger.info("Usuário encontrado: {}", usuario.getNome());
+            if (usuario.getTokenExpiration().isAfter(LocalDateTime.now())) {
+                usuario.setAtivo(true);
+                usuario.setRegistroToken(null);
+                usuario.setTokenExpiration(null);
+                repository.save(usuario);
+                logger.info("Registro confirmado com sucesso para o usuário: {}", usuario.getNome());
+                return ResponseEntity.ok("Registro confirmado com sucesso!");
+            } else {
+                logger.warn("Token expirado para o usuário: {}", usuario.getNome());
+                return ResponseEntity.badRequest().body("Token inválido ou expirado.");
+            }
+        } else {
+            logger.warn("Token não encontrado: {}", token);
+            return ResponseEntity.badRequest().body("Token inválido ou expirado.");
+        }
+    }
+
+    @GetMapping("/api/usuario/validar-token")
+    public ResponseEntity<String> validarTokenGet(@RequestParam String token) {
+        return validarToken(token);
+    }
+
+//    @GetMapping(path = "/api/usuario/{codigo}")
+//    public ResponseEntity consultar(@PathVariable("codigo") Integer codigo) {
+//        return repository.findById(codigo)
+//                .map(record -> ResponseEntity.ok().body(record))
+//                .orElse(ResponseEntity.notFound().build());
+//
+//    }
+
+    @PostMapping("/api/usuario/complete-registro")
+    public ResponseEntity<String> completeRegistro(@RequestParam String token) {
+        UsuarioModel usuario = repository.findByRegistroToken(token);
+        if (usuario != null && usuario.getTokenExpiration().isAfter(LocalDateTime.now())) {
+            return ResponseEntity.ok("Registro já confirmado.");
+        } else {
+            return ResponseEntity.badRequest().body("Token inválido ou expirado.");
+        }
+    }
+
+    @PostMapping("/api/usuario/login")
+    public ResponseEntity<String> login(@RequestParam String login, @RequestParam String senha) {
+        logger.info("Tentativa de login com login: {}", login);
+        UsuarioModel usuario = repository.findByLogin(login);
+
+        if (usuario != null && usuario.isAtivo()){
+            if (usuario.getSenha().equals(senha)) {
+                logger.info("Login bem-sucedido para o usuário: {}", usuario.getNome());
+                return ResponseEntity.ok("Login efetuado com sucesso!");
+            } else {
+                logger.warn("Senha incorreta para o usuário: {}", usuario.getNome());
+                return ResponseEntity.status(401).body("Senha incorreta.");
+            }
+
+        } else {
+            logger.warn("Usuário não encontrado ou inativo: {}", login);
+            return ResponseEntity.status(404).body("Usuário não encontrado ou inativo.");
         }
     }
 }
