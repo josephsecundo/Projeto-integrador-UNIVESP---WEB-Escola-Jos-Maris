@@ -50,7 +50,7 @@
           "options": {
             "browserTarget": "escola-web-site:build"
           },
-          "configurations": {
+        "configurations": {
             "production": {
               "browserTarget": "escola-web-site:build:production"
             }
