@@ -1,0 +1,35 @@
+.infraestrutura {
+  position: absolute; /* Posiciona a infraestrutura de forma absoluta */
+  top: 200px; /* Define a distância do topo (abaixo do cabeçalho) */
+  right: 20px; /* Define a distância da lateral direita */
+  width: 300px; /* Define uma largura fixa */
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.infraestrutura h2 {
+  font-size: 1.5rem;
+  color: #294781;
+  margin-bottom: 15px;
+}
+
+.infraestrutura p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.infraestrutura ul {
+  list-style: none;
+  padding: 0;
+}
+
+.infraestrutura ul li {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
