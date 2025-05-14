@@ -135,13 +135,6 @@ public class UsuarioController {
         return validarToken(token);
     }
 
-//    @GetMapping(path = "/api/usuario/{codigo}")
-//    public ResponseEntity consultar(@PathVariable("codigo") Integer codigo) {
-//        return repository.findById(codigo)
-//                .map(record -> ResponseEntity.ok().body(record))
-//                .orElse(ResponseEntity.notFound().build());
-//
-//    }
 
     @PostMapping("/api/usuario/complete-registro")
     public ResponseEntity<String> completeRegistro(@RequestParam String token) {
@@ -154,21 +147,20 @@ public class UsuarioController {
     }
 
     @PostMapping("/api/usuario/login")
-    public ResponseEntity<String> login(@RequestParam String login, @RequestParam String senha) {
-        logger.info("Tentativa de login com login: {}", login);
-        UsuarioModel usuario = repository.findByLogin(login);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        logger.info("Tentativa de login com login: {}", loginRequest.getLogin());
+        UsuarioModel usuario = repository.findByLogin(loginRequest.getLogin());
 
-        if (usuario != null && usuario.isAtivo()){
-            if (usuario.getSenha().equals(senha)) {
+        if (usuario != null && usuario.isAtivo()) {
+            if (usuario.getSenha().equals(loginRequest.getSenha())) {
                 logger.info("Login bem-sucedido para o usuário: {}", usuario.getNome());
                 return ResponseEntity.ok("Login efetuado com sucesso!");
             } else {
                 logger.warn("Senha incorreta para o usuário: {}", usuario.getNome());
                 return ResponseEntity.status(401).body("Senha incorreta.");
             }
-
         } else {
-            logger.warn("Usuário não encontrado ou inativo: {}", login);
+            logger.warn("Usuário não encontrado ou inativo: {}", loginRequest.getLogin());
             return ResponseEntity.status(404).body("Usuário não encontrado ou inativo.");
         }
     }

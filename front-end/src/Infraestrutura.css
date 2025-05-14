@@ -1,13 +1,14 @@
 .infraestrutura {
-  position: absolute; /* Posiciona a infraestrutura de forma absoluta */
-  top: 200px; /* Define a distância do topo (abaixo do cabeçalho) */
-  right: 20px; /* Define a distância da lateral direita */
-  width: 300px; /* Define uma largura fixa */
+  position: absolute;
+  top: 400px;
+  right: 20px;
+  width: 300px;
   background-color: #f9f9f9;
+  margin: 50x auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  text-align: left; /* Alinha o texto à esquerda */
+  text-align: left;
 }
 
 .infraestrutura h2 {

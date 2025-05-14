@@ -2,6 +2,7 @@ package com.example.escola.escola_web_site.controller;
 
 import com.example.escola.escola_web_site.model.RecadosModel;
 import com.example.escola.escola_web_site.repository.RecadosRepository;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/api/recados")
 public class RecadosController {
+
+    private static final Logger logger = LogManager.getLogger(RecadosController.class);
 
     @Autowired
     private RecadosRepository repository;
@@ -44,21 +49,24 @@ public class RecadosController {
 
     @PostMapping("/salvar")
     public RecadosModel salvar(@RequestBody RecadosModel recado) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        try {
-        LocalDate dataValidade = recado.getdataValidade();
-        if (dataValidade.isBefore(LocalDate.now())) {
+        if (recado.getdataValidade() == null || recado.getdataPostagem() == null) {
+            throw new IllegalArgumentException("Data de postagem e data de validade são obrigatórias.");
+        }
+
+        if (recado.getdataValidade().isBefore(recado.getdataPostagem())) {
+            throw new IllegalArgumentException("A data de validade não pode ser anterior à data de postagem.");
+        }
+
+        if (recado.getdataValidade().isBefore(LocalDate.now())) {
             recado.setAtivo(false);
         }
-        recado.setdataValidade(dataValidade);
-    } catch (DateTimeParseException e) {
-        throw new IllegalArgumentException("Formato de data inválido. Use o formato dd/MM/yyyy.");
-    }
+
         return repository.save(recado);
     }
 
     @PutMapping("/atualizar/{codigo}")
     public ResponseEntity<RecadosModel> atualizar(@PathVariable("codigo") Integer id, @RequestBody RecadosModel recado) {
+        logger.info("Atualizando recado com ID {}: {}", id, recado);
         return repository.findById(id)
                 .map(record -> {
                     if (recado.getTitulo() != null) record.setTitulo(recado.getTitulo());

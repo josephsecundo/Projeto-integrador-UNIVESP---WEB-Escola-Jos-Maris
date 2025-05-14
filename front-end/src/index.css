@@ -93,16 +93,19 @@ code {
 }
 
 .home-mural {
-  position: absolute; /* Posiciona o mural de forma absoluta */
-  top: 200px; /* Define a mesma altura que a infraestrutura */
-  left: 20px; /* Define a distância da lateral esquerda */
-  width: calc(100% - 360px); /* Ajusta a largura para não sobrepor a infraestrutura */
-  max-width: 600px; /* Define uma largura máxima */
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px auto; 
+  width: 100%;
+  max-width: 600px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Centraliza o texto */
+  text-align: center;
+  position: relative;
 }
 
 .home-mural h2 {
@@ -137,4 +140,19 @@ code {
 .home-mural li small {
   font-size: 0.8rem;
   color: #888;
+}
+
+.login-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #294781;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #1e3566;
 }

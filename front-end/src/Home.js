@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './index.css';
-import Infraestrutura from './Infraestrutura'; // Importa o componente Infraestrutura
+import Infraestrutura from './Infraestrutura';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [recados, setRecados] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Hook para navegação
 
-  // Função para formatar a data
   function formatarData(data) {
-    const [dia, mes, ano] = data.split('/'); // Divide a data no formato "dd/MM/yyyy"
-    return new Date(`${ano}-${mes}-${dia}`); // Converte para o formato "yyyy-MM-dd"
+    const [dia, mes, ano] = data.split('/');
+    return new Date(`${ano}-${mes}-${dia}`);
   }
 
-  // Busca os recados no banco de dados
   useEffect(() => {
     axios
-      .get('http://localhost:8081/api/recados/ativos') // Substitua pela URL correta da sua API
+      .get('http://localhost:8081/api/recados/ativos')
       .then((response) => {
         console.log('Dados recebidos:', response.data);
         setRecados(response.data);
@@ -28,11 +28,18 @@ function Home() {
       });
   }, []);
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="home">
       <header className="home-header">
         <h1>BEM VINDO À PROFESSOR JOSE MARIS</h1>
         <p>Esta é a página oficial da nossa escola!</p>
+        <button className="login-button" onClick={handleLoginClick}>
+          Login
+        </button>
       </header>
       <section className="home-location">
         <h2>Localização</h2>
