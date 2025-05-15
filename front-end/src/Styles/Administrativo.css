@@ -1,0 +1,182 @@
+.postar-recado-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.postar-recado-container h2 {
+  font-size: 1.8rem;
+  color: #294781;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  background-color: #294781;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1e3566;
+}
+
+.mensagem {
+  font-size: 1rem;
+  color: green;
+  margin-top: 10px;
+}
+
+.alterar-senha-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.alterar-senha-form h3 {
+  margin-bottom: 15px;
+}
+
+.alterar-senha-form .form-group {
+  margin-bottom: 15px;
+}
+
+.alterar-senha-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.alterar-senha-form .form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.alterar-senha-form button {
+  margin-right: 10px;
+  padding: 8px 15px;
+  font-size: 1rem;
+  color: white;
+  background-color: #294781;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.alterar-senha-form button:hover {
+  background-color: #1e3566;
+}
+
+.administrativo-container {
+  display: flex;
+  justify-content: space-between; /* Espaça os elementos horizontalmente */
+  align-items: flex-start; /* Alinha os elementos no topo */
+  gap: 20px; /* Espaçamento entre as seções */
+  margin-top: 20px;
+}
+
+.alterar-senha {
+  flex: 1; /* Ocupa 1 parte do espaço disponível */
+  text-align: left; /* Alinha o botão à esquerda */
+}
+
+.recados-existentes {
+  flex: 2; /* Ocupa 2 partes do espaço disponível */
+  text-align: center; /* Centraliza o conteúdo */
+}
+
+.recados-inativos {
+  flex: 1; /* Ocupa 1 parte do espaço disponível */
+  text-align: right; /* Alinha o conteúdo à direita */
+}
+
+.recados-lista {
+  list-style: none;
+  padding: 0;
+}
+
+.recado-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.recado-item h3 {
+  margin: 0 0 5px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.recado-item p {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.recado-item button {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  color: white;
+  background-color: #294781;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recado-item button:hover {
+  background-color: #1e3566;
+}
+
+@media (max-width: 768px) {
+  .administrativo-container {
+    flex-direction: column; /* Empilha as seções verticalmente */
+    align-items: stretch; /* Alinha os elementos para ocupar toda a largura */
+  }
+
+  .alterar-senha,
+  .recados-existentes,
+  .recados-inativos {
+    text-align: center; /* Centraliza o conteúdo em telas menores */
+  }
+}
+

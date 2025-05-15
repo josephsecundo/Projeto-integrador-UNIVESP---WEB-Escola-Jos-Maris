@@ -17,7 +17,7 @@ public class RecadosService {
 
     @Scheduled(cron = "0 0 0 * * ?") // Executa diariamente à meia-noite
     public void validateExpiredRecados() {
-        System.out.println("Running scheduled task to validate expired recados...");
+        System.out.println("Executando tarefa agendada para validar recados expirados...");
         LocalDate currentDate = LocalDate.now();
         List<RecadosModel> expiredRecados = repository.findByDataValidadeBeforeAndAtivoTrue(currentDate);
 

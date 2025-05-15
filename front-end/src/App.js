@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import Login from './Login';
-import PostarRecado from './PostarRecado';
+import Login from './Components/Login';
+import PostarRecado from './Components/Administrativo';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/postar-recado" element={<PostarRecado />} />
+        <Route path="/administrativo" element={<PostarRecado />} />
       </Routes>
     </Router>
   );

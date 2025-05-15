@@ -79,4 +79,26 @@ public class RecadosController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/inativar/{codigo}")
+    public ResponseEntity<RecadosModel> inativar(@PathVariable Integer codigo) {
+        return repository.findById(codigo)
+                .map(record -> {
+                    record.setAtivo(false); // Define o recado como inativo
+                    RecadosModel atualizado = repository.save(record);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/reativar/{codigo}")
+    public ResponseEntity<RecadosModel> reativar(@PathVariable Integer codigo) {
+        return repository.findById(codigo)
+                .map(record -> {
+                    record.setAtivo(true); // Define o recado como ativo
+                    RecadosModel atualizado = repository.save(record);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

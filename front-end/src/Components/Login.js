@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importa o hook para navegação
-import './Login.css';
+import '../Styles/Login.css';
 
 function Login() {
   const [usuario, setUsuario] = useState('');
@@ -27,7 +27,7 @@ function Login() {
       );
       console.log('Resposta do servidor:', response.data);
       alert('Login bem-sucedido!');
-      navigate('/postar-recado'); // Certifique-se de que o caminho está correto
+      navigate('/administrativo'); // Certifique-se de que o caminho está correto
     } catch (err) {
       console.error('Erro ao tentar fazer login:', err);
       if (err.response && err.response.status === 401) {

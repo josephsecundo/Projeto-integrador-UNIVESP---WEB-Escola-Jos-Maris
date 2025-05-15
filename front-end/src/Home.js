@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './index.css';
-import Infraestrutura from './Infraestrutura';
+import './Styles/index.css';
+import Infraestrutura from './Components/Infraestrutura';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
@@ -38,7 +38,7 @@ function Home() {
         <h1>BEM VINDO À PROFESSOR JOSE MARIS</h1>
         <p>Esta é a página oficial da nossa escola!</p>
         <button className="login-button" onClick={handleLoginClick}>
-          Login
+          SouAdmin
         </button>
       </header>
       <section className="home-location">

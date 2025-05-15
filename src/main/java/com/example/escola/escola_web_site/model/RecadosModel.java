@@ -28,12 +28,12 @@ public class RecadosModel {
 
     @NotNull(message = "Data de postagem é obrigatória")
     @Column(nullable = false)
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataPostagem = LocalDate.now();
 
     @NotNull(message = "Data de validade é obrigatória")
     @Column(nullable = false)
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataValidade;
 
     @Column(nullable = false)

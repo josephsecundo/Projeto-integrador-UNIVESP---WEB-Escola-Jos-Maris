@@ -1,5 +1,5 @@
 import React from 'react';
-import './Infraestrutura.css';
+import '../Styles/Infraestrutura.css';
 
 function Infraestrutura() {
   return (
