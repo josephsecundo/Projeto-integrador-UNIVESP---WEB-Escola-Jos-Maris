@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa o hook para navegação
+import { useNavigate } from 'react-router-dom';
 import '../Styles/Login.css';
 
 function Login() {
+  document.title = 'Login';
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Inicializa o hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ function Login() {
       );
       console.log('Resposta do servidor:', response.data);
       alert('Login bem-sucedido!');
-      navigate('/administrativo'); // Certifique-se de que o caminho está correto
+      navigate('/administrativo');
     } catch (err) {
       console.error('Erro ao tentar fazer login:', err);
       if (err.response && err.response.status === 401) {

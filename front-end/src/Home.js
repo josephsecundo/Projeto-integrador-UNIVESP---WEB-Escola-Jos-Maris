@@ -5,6 +5,7 @@ import Infraestrutura from './Components/Infraestrutura';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  document.title = 'Página Inicial - Professor José Maris';
   const [recados, setRecados] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // Hook para navegação

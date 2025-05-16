@@ -1,6 +1,21 @@
+.administrativo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  margin: 30px 40px;
+  width: auto;
+}
+
 .postar-recado-container {
-  max-width: 600px;
-  margin: 50px auto;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 420px;
+  width: 100%;
+  z-index: 2000;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -39,14 +54,19 @@ textarea {
   height: 100px;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
+button,
+.recado-item button,
+.recado-acoes button,
+.alterar-senha-form button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  min-width: 70px;
+  width: auto;
+  margin: 2px;
   color: white;
   background-color: #294781;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -58,6 +78,14 @@ button:hover {
   font-size: 1rem;
   color: green;
   margin-top: 10px;
+}
+
+.alterar-senha-topo button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  min-width: 70px;
+  width: auto;
+  margin: 10px 50px;
 }
 
 .alterar-senha-form {
@@ -90,42 +118,29 @@ button:hover {
   border-radius: 4px;
 }
 
-.alterar-senha-form button {
-  margin-right: 10px;
-  padding: 8px 15px;
-  font-size: 1rem;
-  color: white;
-  background-color: #294781;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.alterar-senha-form button:hover {
-  background-color: #1e3566;
-}
-
-.administrativo-container {
-  display: flex;
-  justify-content: space-between; /* Espaça os elementos horizontalmente */
-  align-items: flex-start; /* Alinha os elementos no topo */
-  gap: 20px; /* Espaçamento entre as seções */
-  margin-top: 20px;
-}
-
 .alterar-senha {
-  flex: 1; /* Ocupa 1 parte do espaço disponível */
-  text-align: left; /* Alinha o botão à esquerda */
+  flex: 1;
+  text-align: left;
 }
 
-.recados-existentes {
-  flex: 2; /* Ocupa 2 partes do espaço disponível */
-  text-align: center; /* Centraliza o conteúdo */
+.alterar-senha-coluna {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.recados-inativos {
-  flex: 1; /* Ocupa 1 parte do espaço disponível */
-  text-align: right; /* Alinha o conteúdo à direita */
+.alterar-senha-coluna button {
+  margin-bottom: 10px;
+}
+
+.recados-existentes,
+.recados-inativos,
+.recados-coluna {
+  flex: 1;
+  min-width: 180px;
+  max-width: 320px;
 }
 
 .recados-lista {
@@ -134,11 +149,11 @@ button:hover {
 }
 
 .recado-item {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
 }
 
 .recado-item h3 {
@@ -153,30 +168,60 @@ button:hover {
   color: #555;
 }
 
-.recado-item button {
-  padding: 5px 10px;
-  font-size: 0.9rem;
-  color: white;
+.recado-acoes button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  min-width: 60px;
+  margin-right: 5px;
+}
+
+.painel-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 50px 20px 20px;
+}
+
+.painel-btn{
+   display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 50px 20px 20px;
+}
+
+.alterar-senha-btn {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  min-width: 70px;
   background-color: #294781;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.recado-item button:hover {
+.painel-btn:hover,
+.alterar-senha-btn:hover {
   background-color: #1e3566;
 }
 
 @media (max-width: 768px) {
   .administrativo-container {
-    flex-direction: column; /* Empilha as seções verticalmente */
-    align-items: stretch; /* Alinha os elementos para ocupar toda a largura */
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .alterar-senha,
   .recados-existentes,
   .recados-inativos {
-    text-align: center; /* Centraliza o conteúdo em telas menores */
+    text-align: center;
+  }
+
+  .alterar-senha button {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    min-width: 70px;
+    margin: 2px;
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/Administrativo.css';
+import CadastroUsuarioModal from './CadastroUsuario';
 
 function PostarRecado() {
   const [titulo, setTitulo] = useState('');
@@ -8,15 +9,17 @@ function PostarRecado() {
   const [dataValidade, setDataValidade] = useState('');
   const [mensagem, setMensagem] = useState('');
   const [recados, setRecados] = useState([]);
-  const [editando, setEditando] = useState(null); // Armazena o ID do recado sendo editado
-  const [exibirAlterarSenha, setExibirAlterarSenha] = useState(false); // Estado para exibir alterar senha
+  const [editando, setEditando] = useState(null);
+  const [exibirAlterarSenha, setExibirAlterarSenha] = useState(false);
   const [senhaAtual, setSenhaAtual] = useState('');
   const [novaSenha, setNovaSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mensagemSenha, setMensagemSenha] = useState('');
+  const [mostrarPainel, setMostrarPainel] = useState(false);
+  const [modalCadastroUsuario, setModalCadastroUsuario] = useState(false);
 
-  // Carrega os recados existentes ao montar o componente
   useEffect(() => {
+    document.title = 'Administrativo';
     const carregarRecados = async () => {
       try {
         const response = await axios.get('http://localhost:8081/api/recados');
@@ -28,12 +31,10 @@ function PostarRecado() {
     carregarRecados();
   }, []);
 
-  // Função para postar ou editar um recado
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editando) {
-        // Editar recado existente
         await axios.put(`http://localhost:8081/api/recados/atualizar/${editando}`, {
           titulo,
           descricao,
@@ -41,7 +42,6 @@ function PostarRecado() {
         });
         setMensagem('Recado atualizado com sucesso!');
       } else {
-        // Criar novo recado
         const response = await axios.post(
           'http://localhost:8081/api/recados/salvar',
           {
@@ -56,7 +56,7 @@ function PostarRecado() {
           }
         );
         setMensagem('Recado postado com sucesso!');
-        setRecados([...recados, response.data]); // Adiciona o novo recado à lista
+        setRecados([...recados, response.data]);
       }
       setTitulo('');
       setDescricao('');
@@ -68,13 +68,12 @@ function PostarRecado() {
     }
   };
 
-  // Função para inativar um recado
   const inativarRecado = async (id) => {
     try {
       await axios.put(`http://localhost:8081/api/recados/inativar/${id}`);
       setRecados(recados.map((recado) =>
         recado.codigo === id ? { ...recado, ativo: false } : recado
-      )); // Atualiza o estado local para refletir a mudança
+      ));
       setMensagem('Recado inativado com sucesso!');
     } catch (err) {
       console.error('Erro ao inativar recado:', err);
@@ -82,13 +81,12 @@ function PostarRecado() {
     }
   };
 
-  // Função para reativar um recado
   const reativarRecado = async (id) => {
     try {
       await axios.put(`http://localhost:8081/api/recados/reativar/${id}`);
       setRecados(recados.map((recado) =>
         recado.codigo === id ? { ...recado, ativo: true } : recado
-      )); // Atualiza o estado local para refletir a mudança
+      ));
       setMensagem('Recado reativado com sucesso!');
     } catch (err) {
       console.error('Erro ao reativar recado:', err);
@@ -96,7 +94,6 @@ function PostarRecado() {
     }
   };
 
-  // Função para iniciar a edição de um recado
   const iniciarEdicao = (recado) => {
     setEditando(recado.codigo);
     setTitulo(recado.titulo);
@@ -104,7 +101,6 @@ function PostarRecado() {
     setDataValidade(recado.dataValidade);
   };
 
-  // Função para alterar senha
   const handleAlterarSenha = async (e) => {
     e.preventDefault();
     if (novaSenha !== confirmarSenha) {
@@ -127,48 +123,44 @@ function PostarRecado() {
     }
   };
 
-  return (
-    <div className="postar-recado-container">
-      <h2>{editando ? 'Editar Recado' : 'Postar Recado'}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="titulo">Título:</label>
-          <input
-            type="text"
-            id="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="descricao">Descrição:</label>
-          <textarea
-            id="descricao"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <div className="form-group">
-          <label htmlFor="dataValidade">Data de Validade:</label>
-          <input
-            type="date"
-            id="dataValidade"
-            value={dataValidade}
-            onChange={(e) => setDataValidade(e.target.value)}
-            required
-          />
-        </div>
-        {mensagem && <p className="mensagem">{mensagem}</p>}
-        <button type="submit">{editando ? 'Atualizar' : 'Postar'}</button>
-      </form>
+return (
+  <div>
+    <div className="painel-topo">
+      <button
+        className="pagina-inicial-btn"
+        onClick={() => window.location.href = '/'}
+      >
+        Página Inicial
+      </button>
+      <button
+        className="painel-btn"
+        onClick={() => setMostrarPainel((prev) => !prev)}
+      >
+        Painel
+      </button>
+      {mostrarPainel && (
+        <>
+        <button
+            className="alterar-senha-btn"
+            onClick={() => setExibirAlterarSenha(true)}
+          >
+            Alterar Senha
+          </button>
+          <button
+            className="cadastrar-usuario-btn"
+            onClick={() => setModalCadastroUsuario(true)}
+          >
+            Cadastrar Usuário
+          </button>
+           <CadastroUsuarioModal
+           aberto={modalCadastroUsuario}
+           onClose={() => setModalCadastroUsuario(false)}/>
+        </>
+      )}
+    </div>
 
-      <div className="alterar-senha-container">
-        <button onClick={() => setExibirAlterarSenha(true)}>Alterar Senha</button>
-      </div>
-
-      {exibirAlterarSenha && (
+    {exibirAlterarSenha && (
+      <div className='administrativo-container'>
         <div className="alterar-senha-form">
           <h3>Alterar Senha</h3>
           <form onSubmit={handleAlterarSenha}>
@@ -207,38 +199,81 @@ function PostarRecado() {
             <button type="button" onClick={() => setExibirAlterarSenha(false)}>Cancelar</button>
           </form>
         </div>
-      )}
+      </div>
+    )}
 
-      <h2>Recados Existentes</h2>
-      <ul className="recados-lista">
-        {recados.filter((recado) => recado.ativo).map((recado) => (
-          <li key={recado.codigo} className="recado-item">
-            <h3>{recado.titulo}</h3>
-            <p>{recado.descricao}</p>
-            <p>Validade: {recado.dataValidade}</p>
-            <div className="recado-acoes">
-              <button onClick={() => iniciarEdicao(recado)}>Editar</button>
-              <button onClick={() => inativarRecado(recado.codigo)}>Inativar</button>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Recados Inativos</h2>
-      <ul className="recados-lista">
-        {recados.filter((recado) => !recado.ativo).map((recado) => (
-          <li key={recado.codigo} className="recado-item">
-            <h3>{recado.titulo}</h3>
-            <p>{recado.descricao}</p>
-            <p>Validade: {recado.dataValidade}</p>
-            <div className="recado-acoes">
-              <button onClick={() => reativarRecado(recado.codigo)}>Reativar</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div className="administrativo-container">
+      <div className="recados-coluna">
+        <h2>Recados Ativos</h2>
+        <ul className="recados-lista">
+          {recados.filter((recado) => recado.ativo).map((recado) => (
+            <li key={recado.codigo} className="recado-item">
+              <h3>{recado.titulo}</h3>
+              <p>{recado.descricao}</p>
+              <p>Validade: {recado.dataValidade}</p>
+              <div className="recado-acoes">
+                <button onClick={() => iniciarEdicao(recado)}>Editar</button>
+                <button onClick={() => inativarRecado(recado.codigo)}>Inativar</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="recados-coluna">
+        <h2>Recados Inativos</h2>
+        <ul className="recados-lista">
+          {recados.filter((recado) => !recado.ativo).map((recado) => (
+            <li key={recado.codigo} className="recado-item">
+              <h3>{recado.titulo}</h3>
+              <p>{recado.descricao}</p>
+              <p>Validade: {recado.dataValidade}</p>
+              <div className="recado-acoes">
+                <button onClick={() => reativarRecado(recado.codigo)}>Reativar</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-  );
+
+    <div className="postar-recado-container">
+      <h2>{editando ? 'Editar Recado' : 'Postar Recado'}</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="titulo">Título:</label>
+          <input
+            type="text"
+            id="titulo"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="descricao">Descrição:</label>
+          <textarea
+            id="descricao"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            required
+          ></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="dataValidade">Data de Validade:</label>
+          <input
+            type="date"
+            id="dataValidade"
+            value={dataValidade}
+            onChange={(e) => setDataValidade(e.target.value)}
+            required
+          />
+        </div>
+        {mensagem && <p className="mensagem">{mensagem}</p>}
+        <button type="submit">{editando ? 'Atualizar' : 'Postar'}</button>
+      </form>
+    </div>
+  </div>
+);
 }
 
 export default PostarRecado;
