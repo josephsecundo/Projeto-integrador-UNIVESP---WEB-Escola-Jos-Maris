@@ -4,11 +4,13 @@ import './Styles/index.css';
 import Infraestrutura from './Components/Infraestrutura';
 import { useNavigate } from 'react-router-dom';
 
+
 function Home() {
   document.title = 'Página Inicial - Professor José Maris';
   const [recados, setRecados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Hook para navegação
+  const [weather, setWeather] = useState(null);
+  const navigate = useNavigate();
 
   function formatarData(data) {
     const [dia, mes, ano] = data.split('/');
@@ -29,12 +31,25 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=Tupã,BR&appid=8c22d333854ba1dc99caa54b1357163d&units=metric&lang=pt_br')
+      .then(res => res.json())
+      .then(data => setWeather(data))
+      .catch(() => setWeather(null));
+  }, []);
+
   const handleLoginClick = () => {
     navigate('/login');
   };
 
   return (
     <div className="home">
+      <div className="home-images-coluna">
+        <img src="/images/imagem1.jpg" alt="Imagem 1" className="home-img" />
+        <img src="/images/imagem2.jpg" alt="Imagem 2" className="home-img" />
+        <img src="/images/imagem3.jpg" alt="Imagem 3" className="home-img" />
+      </div>
+      <div className='home-content'>
       <header className="home-header">
         <h1>BEM VINDO À PROFESSOR JOSE MARIS</h1>
         <p>Esta é a página oficial da nossa escola!</p>
@@ -61,7 +76,25 @@ function Home() {
           ></iframe>
         </div>
       </section>
-      <Infraestrutura /> {/* Adiciona o componente Infraestrutura */}
+      <section className="home-weather">
+        <h2>Previsão do Tempo</h2>
+        {weather && weather.main ? (
+          <div>
+            <p>
+              {weather.name} - {weather.weather[0].description}
+            </p>
+            <p>
+              Temperatura: {Math.round(weather.main.temp)}°C
+            </p>
+            <p>
+              Umidade: {weather.main.humidity}%
+            </p>
+          </div>
+        ) : (
+          <p>Carregando previsão...</p>
+        )}
+      </section>
+      <Infraestrutura /> {}
       <section className="home-mural">
         <h2>Mural de Recados</h2>
         {loading ? (
@@ -82,6 +115,7 @@ function Home() {
           <p>Nenhum recado disponível no momento.</p>
         )}
       </section>
+      </div>
     </div>
   );
 }
