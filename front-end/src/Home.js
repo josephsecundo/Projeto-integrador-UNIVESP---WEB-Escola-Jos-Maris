@@ -45,9 +45,9 @@ function Home() {
   return (
     <div className="home">
       <div className="home-images-coluna">
-        <img src="/images/imagem1.jpg" alt="Imagem 1" className="home-img" />
-        <img src="/images/imagem2.jpg" alt="Imagem 2" className="home-img" />
-        <img src="/images/imagem3.jpg" alt="Imagem 3" className="home-img" />
+        <img src="/images/escola.jpg" alt="Imagem 1" className="home-img" />
+        <img src="/images/escolaFachada.jpg" alt="Imagem 2" className="home-img" />
+        <img src="/images/escolaPanoramica.jpg" alt="Imagem 3" className="home-img" />
       </div>
       <div className='home-content'>
       <header className="home-header">
