@@ -3,13 +3,14 @@ import axios from 'axios';
 import './Styles/index.css';
 import Infraestrutura from './Components/Infraestrutura';
 import { useNavigate } from 'react-router-dom';
-
+import LoginModal from './Components/LoginModal';
 
 function Home() {
   document.title = 'Página Inicial - Professor José Maris';
   const [recados, setRecados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weather, setWeather] = useState(null);
+  const [loginModalAberto, setLoginModalAberto] = useState(false);
   const navigate = useNavigate();
 
   function formatarData(data) {
@@ -39,7 +40,7 @@ function Home() {
   }, []);
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/LoginModal');
   };
 
   return (
@@ -51,11 +52,19 @@ function Home() {
       </div>
       <div className='home-content'>
       <header className="home-header">
-        <h1>BEM VINDO À PROFESSOR JOSE MARIS</h1>
+        <h1>BEM VINDO À ESCOLA PROFESSOR JOSÉ MARIS</h1>
         <p>Esta é a página oficial da nossa escola!</p>
-        <button className="login-button" onClick={handleLoginClick}>
+        <button
+          className="login-button"
+          onClick={() => setLoginModalAberto(true)}
+        >
           SouAdmin
         </button>
+        <LoginModal
+          aberto={loginModalAberto}
+          onClose={() => setLoginModalAberto(false)}
+          onEsqueceuSenha={() => alert('Função de recuperação de senha!')}
+        />
       </header>
       <section className="home-location">
         <h2>Localização</h2>

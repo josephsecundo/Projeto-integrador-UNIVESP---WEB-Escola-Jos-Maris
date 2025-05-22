@@ -4,7 +4,9 @@ html, body {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  background-color: #888;
+  overflow: hidden;
+  background: url('/public/images/escolaFachada.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
 #root {
@@ -41,15 +43,17 @@ code {
 .home-images-coluna {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin: 40px 24px 0 24px;
+  gap: 84px;
+  margin: 140px 32px 0 32px;
+  width: 240px;      /* aumenta a largura da coluna */
+  height: 100%;
 }
 
 .home-img {
-  width: 180px;
+  width: 540px;      /* aumenta a largura da imagem */
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
   object-fit: cover;
 }
 

@@ -49,3 +49,17 @@ button {
 button:hover {
   background-color: #1e3566;
 }
+
+.esqueceu-senha-btn {
+  background: none;
+  border: none;
+  color: #294781;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.esqueceu-senha-btn:hover {
+  color: #1e3566;
+}

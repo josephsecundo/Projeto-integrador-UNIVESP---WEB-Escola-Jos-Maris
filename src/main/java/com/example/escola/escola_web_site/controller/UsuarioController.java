@@ -49,11 +49,10 @@ public class UsuarioController {
     public ResponseEntity<String> salvar(@RequestBody UsuarioModel usuario) {
         String token = UUID.randomUUID().toString();
         usuario.setRegistroToken(token);
-        usuario.setTokenExpiration(LocalDateTime.now().plusHours(24)); // Token válido por 24 horas
-        usuario.setAtivo(false); // Usuário inativo até confirmar o registro
+        usuario.setTokenExpiration(LocalDateTime.now().plusHours(24));
+        usuario.setAtivo(false);
         repository.save(usuario);
 
-        // Enviar o token por e-mail
         String mensagem = "Olá " + usuario.getNome() + ",\n\n" +
                 "Por favor, confirme seu cadastro clicando no link abaixo:\n" +
                 "http://localhost:8081/api/usuario/validar-token?token=" + token;
