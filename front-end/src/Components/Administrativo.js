@@ -157,10 +157,10 @@ function PostarRecado() {
       return;
     }
     try {
-      await axios.put('http://localhost:8081/api/usuario/alterar-senha', {
-        senhaAtual,
-        novaSenha,
-      });
+      const codigoUsuario = 1;
+      await axios.put(
+        `http://localhost:8081/api/usuario/alterar-senha?codigo=${codigoUsuario}&senhaAtual=${encodeURIComponent(senhaAtual)}&novaSenha=${encodeURIComponent(novaSenha)}`
+      );
       setMensagemSenha('Senha alterada com sucesso!');
       setSenhaAtual('');
       setNovaSenha('');
@@ -168,7 +168,11 @@ function PostarRecado() {
       setExibirAlterarSenha(false);
     } catch (err) {
       console.error('Erro ao alterar senha:', err);
-      setMensagemSenha('Erro ao alterar senha.');
+      if (err.response && err.response.data) {
+        setMensagemSenha(err.response.data);
+      } else {
+        setMensagemSenha('Erro ao alterar senha.');
+      }
     }
   };
   
@@ -230,7 +234,14 @@ function PostarRecado() {
               <li key={recado.codigo} className="recado-item">
                 <h3>{recado.titulo}</h3>
                 <p>{recado.descricao}</p>
-                <p>Validade: {recado.dataValidade}</p>
+                <p>Validade: {
+  recado.dataValidade
+    ? (() => {
+        const [ano, mes, dia] = recado.dataValidade.split('-');
+        return `${dia}-${mes}-${ano}`;
+      })()
+    : ''
+}</p>
                 <div className="recado-acoes">
                   <button onClick={() => iniciarEdicao(recado)}>Editar</button>
                   <button onClick={() => inativarRecado(recado.codigo)}>Inativar</button>
@@ -246,7 +257,14 @@ function PostarRecado() {
               <li key={recado.codigo} className="recado-item">
                 <h3>{recado.titulo}</h3>
                 <p>{recado.descricao}</p>
-                <p>Validade: {recado.dataValidade}</p>
+                <p>Validade: {
+  recado.dataValidade
+    ? (() => {
+        const [ano, mes, dia] = recado.dataValidade.split('-');
+        return `${dia}-${mes}-${ano}`;
+      })()
+    : ''
+}</p>
                 <div className="recado-acoes">
                   <button onClick={() => reativarRecado(recado.codigo)}>Reativar</button>
                 </div>
