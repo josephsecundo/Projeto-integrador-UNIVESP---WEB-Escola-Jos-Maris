@@ -3,11 +3,15 @@ import axios from 'axios';
 import './Styles/index.css';
 import Infraestrutura from './Components/Infraestrutura';
 import { useNavigate } from 'react-router-dom';
+import LoginModal from './Components/LoginModal';
 
 function Home() {
+  document.title = 'Página Inicial - Professor José Maris';
   const [recados, setRecados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Hook para navegação
+  const [weather, setWeather] = useState(null);
+  const [loginModalAberto, setLoginModalAberto] = useState(false);
+  const navigate = useNavigate();
 
   function formatarData(data) {
     const [dia, mes, ano] = data.split('/');
@@ -28,18 +32,39 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=Tupã,BR&appid=8c22d333854ba1dc99caa54b1357163d&units=metric&lang=pt_br')
+      .then(res => res.json())
+      .then(data => setWeather(data))
+      .catch(() => setWeather(null));
+  }, []);
+
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/LoginModal');
   };
 
   return (
     <div className="home">
+      <div className="home-images-coluna">
+        <img src="/images/escola.jpg" alt="Imagem 1" className="home-img" />
+        <img src="/images/escolaFachada.jpg" alt="Imagem 2" className="home-img" />
+        <img src="/images/escolaPanoramica.jpg" alt="Imagem 3" className="home-img" />
+      </div>
+      <div className='home-content'>
       <header className="home-header">
-        <h1>BEM VINDO À PROFESSOR JOSE MARIS</h1>
+        <h1>BEM VINDO À ESCOLA PROFESSOR JOSÉ MARIS</h1>
         <p>Esta é a página oficial da nossa escola!</p>
-        <button className="login-button" onClick={handleLoginClick}>
+        <button
+          className="login-button"
+          onClick={() => setLoginModalAberto(true)}
+        >
           SouAdmin
         </button>
+        <LoginModal
+          aberto={loginModalAberto}
+          onClose={() => setLoginModalAberto(false)}
+          onEsqueceuSenha={() => alert('Função de recuperação de senha!')}
+        />
       </header>
       <section className="home-location">
         <h2>Localização</h2>
@@ -60,7 +85,25 @@ function Home() {
           ></iframe>
         </div>
       </section>
-      <Infraestrutura /> {/* Adiciona o componente Infraestrutura */}
+      <section className="home-weather">
+        <h2>Previsão do Tempo</h2>
+        {weather && weather.main ? (
+          <div>
+            <p>
+              {weather.name} - {weather.weather[0].description}
+            </p>
+            <p>
+              Temperatura: {Math.round(weather.main.temp)}°C
+            </p>
+            <p>
+              Umidade: {weather.main.humidity}%
+            </p>
+          </div>
+        ) : (
+          <p>Carregando previsão...</p>
+        )}
+      </section>
+      <Infraestrutura /> {}
       <section className="home-mural">
         <h2>Mural de Recados</h2>
         {loading ? (
@@ -81,6 +124,7 @@ function Home() {
           <p>Nenhum recado disponível no momento.</p>
         )}
       </section>
+      </div>
     </div>
   );
 }

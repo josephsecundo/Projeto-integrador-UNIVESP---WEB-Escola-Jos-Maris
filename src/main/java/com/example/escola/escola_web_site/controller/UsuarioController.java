@@ -49,11 +49,10 @@ public class UsuarioController {
     public ResponseEntity<String> salvar(@RequestBody UsuarioModel usuario) {
         String token = UUID.randomUUID().toString();
         usuario.setRegistroToken(token);
-        usuario.setTokenExpiration(LocalDateTime.now().plusHours(24)); // Token válido por 24 horas
-        usuario.setAtivo(false); // Usuário inativo até confirmar o registro
+        usuario.setTokenExpiration(LocalDateTime.now().plusHours(24));
+        usuario.setAtivo(false);
         repository.save(usuario);
 
-        // Enviar o token por e-mail
         String mensagem = "Olá " + usuario.getNome() + ",\n\n" +
                 "Por favor, confirme seu cadastro clicando no link abaixo:\n" +
                 "http://localhost:8081/api/usuario/validar-token?token=" + token;
@@ -162,6 +161,34 @@ public class UsuarioController {
         } else {
             logger.warn("Usuário não encontrado ou inativo: {}", loginRequest.getLogin());
             return ResponseEntity.status(404).body("Usuário não encontrado ou inativo.");
+        }
+    }
+
+    @PutMapping("/api/usuario/alterar-senha")
+    public ResponseEntity<String> alterarSenha(
+            @RequestParam Integer codigo,
+            @RequestParam String senhaAtual,
+            @RequestParam String novaSenha) {
+        try {
+            return repository.findById(codigo)
+                    .map(usuario -> {
+                        if (!usuario.getSenha().equals(senhaAtual)) {
+                            return ResponseEntity.status(401).body("Senha atual incorreta.");
+                        }
+
+                        if (!novaSenha.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+                            return ResponseEntity.badRequest().body(
+                                    "A nova senha deve conter pelo menos 8 caracteres, incluindo letras, números e um caractere especial.");
+                        }
+
+                        usuario.setSenha(novaSenha); // Hash the password if necessary
+                        repository.save(usuario);
+                        return ResponseEntity.ok("Senha alterada com sucesso.");
+                    })
+                    .orElseGet(() -> ResponseEntity.status(404).body("Usuário não encontrado."));
+        } catch (Exception e) {
+            logger.error("Erro ao alterar senha para o usuário {}: {}", codigo, e.getMessage(), e);
+            return ResponseEntity.status(500).body("Erro ao alterar senha: " + e.getMessage());
         }
     }
 }
