@@ -1,0 +1,77 @@
+.borrowings-page {
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header button {
+  padding: 8px 12px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.borrowings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.borrowings-table th,
+.borrowings-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.status.borrowed { color: orange; font-weight: bold; }
+.status.returned { color: green; font-weight: bold; }
+.status.overdue { color: red; font-weight: bold; }
+
+.btn-return {
+  padding: 6px 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
