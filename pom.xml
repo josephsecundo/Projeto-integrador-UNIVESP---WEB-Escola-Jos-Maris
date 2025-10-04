@@ -11,7 +11,8 @@
 	<groupId>com.example.escola</groupId>
 	<artifactId>escola-web-site</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Escola Web Site</name>
+    <packaging>pom</packaging>
+    <name>Escola Web Site</name>
 	<description>Site Escola</description>
 	<url/>
 	<licenses>
@@ -20,7 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+    <modules>
+        <module>backBiblioteca</module>
+    </modules>
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
