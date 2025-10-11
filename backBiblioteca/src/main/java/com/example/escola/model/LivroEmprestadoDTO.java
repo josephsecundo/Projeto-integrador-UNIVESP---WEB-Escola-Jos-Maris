@@ -18,7 +18,6 @@ public class LivroEmprestadoDTO {
     public void dataDevolucao(LocalDate dataDevolucao) {
     }
 
-    // Getters and Setters
     public String getTituloLivro() {
         return tituloLivro;
     }
