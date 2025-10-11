@@ -28,16 +28,13 @@ public class Livros {
     private String categoria;
 
     @Column(nullable = false)
-    private Integer quantidade;
+    private Integer quantidade_disponivel;
 
     @Column(nullable = false)
     private String descricao;
 
     @Column(nullable = true)
     private String localizacao;
-
-    @Column(nullable = false)
-    private Boolean disponivel;
 
     public Integer getId() {
         return id;
@@ -95,12 +92,12 @@ public class Livros {
         this.categoria = categoria;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getQuantidadeDisponivel() {
+        return quantidade_disponivel;
     }
 
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
+    public void setQuantidadeDiponivel(Integer quantidade_disponivel) {
+        this.quantidade_disponivel = quantidade_disponivel;
     }
 
     public String getDescricao() {
@@ -117,13 +114,5 @@ public class Livros {
 
     public void setLocalizacao(String localizacao) {
         this.localizacao = localizacao;
-    }
-
-    public Boolean getDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(Boolean disponivel) {
-        this.disponivel = disponivel;
     }
 }

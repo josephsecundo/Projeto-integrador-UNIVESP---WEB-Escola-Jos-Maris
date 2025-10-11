@@ -16,7 +16,7 @@ public class Alunos {
     @Column(nullable = false, unique = true)
     private String matricula;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
     @Column(nullable = true)
@@ -25,8 +25,20 @@ public class Alunos {
     @Column(nullable = true)
     private String endereco;
 
-    @Column(nullable = false, name = "data_nascimento")
+    @Column(nullable = true, name = "data_nascimento")
     private LocalDate dataNascimento;
+
+    @ManyToOne
+    @JoinColumn(name = "serie_id", nullable = false)
+    private Series serie;
+
+    public Series getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Series serie) {
+        this.serie = serie;
+    }
 
     public Integer getId() {
         return id;

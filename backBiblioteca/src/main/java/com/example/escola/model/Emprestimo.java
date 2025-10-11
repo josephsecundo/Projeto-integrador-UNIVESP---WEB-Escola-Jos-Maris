@@ -24,6 +24,9 @@ public class Emprestimo {
     @Column(nullable = true)
     private LocalDate dataDevolucao;
 
+    @Column(nullable = false)
+    private String status;
+
     public Integer getId() {
         return id;
     }
@@ -62,5 +65,13 @@ public class Emprestimo {
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+       this.status = status;
     }
 }
