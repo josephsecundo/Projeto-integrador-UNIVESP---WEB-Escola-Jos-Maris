@@ -1,7 +1,8 @@
 package com.example.escola.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Professores {
@@ -13,14 +14,12 @@ public class Professores {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 11)
-    private String nr_cpf;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "professor")
-    private List<Series> series;
+    @ManyToMany(mappedBy = "professores")
+    @JsonIgnore
+    private Set<Series> series;
 
     public Integer getId() {
         return id;
@@ -38,15 +37,6 @@ public class Professores {
         this.nome = nome;
     }
 
-    public String getNr_cpf() {
-        return nr_cpf;
-    }
-
-    public void setNr_cpf(String nr_cpf) {
-        this.nr_cpf = nr_cpf;
-    }
-
-
     public String getEmail() {
         return email;
     }
@@ -55,11 +45,11 @@ public class Professores {
         this.email = email;
     }
 
-    public List<Series> getSeries() {
+    public Set<Series> getSeries() {
         return series;
     }
 
-    public void setSeries(List<Series> series) {
+    public void setSeries(Set<Series> series) {
         this.series = series;
     }
 }

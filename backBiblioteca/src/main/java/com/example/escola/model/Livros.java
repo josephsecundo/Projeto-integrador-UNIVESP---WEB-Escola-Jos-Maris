@@ -13,28 +13,10 @@ public class Livros {
     private String titulolivro;
 
     @Column(nullable = false)
-    private String autorlivro;
+    private Integer quantidade;
 
-    @Column(nullable = false)
-    private String editora;
-
-    @Column(nullable = false)
-    private Integer anopublicacao;
-
-    @Column(nullable = false, unique = true)
-    private String isbn;
-
-    @Column(nullable = false)
-    private String categoria;
-
-    @Column(nullable = false)
-    private Integer quantidade_disponivel;
-
-    @Column(nullable = false)
-    private String descricao;
-
-    @Column(nullable = true)
-    private String localizacao;
+    @Column(nullable = false, name = "quantidade_disponivel")
+    private Integer quantidadeDisponivel;
 
     public Integer getId() {
         return id;
@@ -52,67 +34,19 @@ public class Livros {
         this.titulolivro = titulolivro;
     }
 
-    public String getAutorlivro() {
-        return autorlivro;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setAutorlivro(String autorlivro) {
-        this.autorlivro = autorlivro;
-    }
-
-    public String getEditora() {
-        return editora;
-    }
-
-    public void setEditora(String editora) {
-        this.editora = editora;
-    }
-
-    public Integer getAnopublicacao() {
-        return anopublicacao;
-    }
-
-    public void setAnopublicacao(Integer anopublicacao) {
-        this.anopublicacao = anopublicacao;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
     public Integer getQuantidadeDisponivel() {
-        return quantidade_disponivel;
+        return quantidadeDisponivel;
     }
 
-    public void setQuantidadeDiponivel(Integer quantidade_disponivel) {
-        this.quantidade_disponivel = quantidade_disponivel;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
+    public void setQuantidadeDisponivel(Integer quantidadeDisponivel) {
+        this.quantidadeDisponivel = quantidadeDisponivel;
     }
 }

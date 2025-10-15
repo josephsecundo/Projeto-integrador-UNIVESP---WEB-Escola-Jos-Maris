@@ -8,15 +8,7 @@ public class DevolucaoRequest {
         return livroId;
     }
 
-    public void setLivroId(Integer livroId) {
-        this.livroId = livroId;
-    }
-
     public String getMatriculaAluno() {
         return matriculaAluno;
-    }
-
-    public void setMatriculaAluno(String matriculaAluno) {
-        this.matriculaAluno = matriculaAluno;
     }
 }

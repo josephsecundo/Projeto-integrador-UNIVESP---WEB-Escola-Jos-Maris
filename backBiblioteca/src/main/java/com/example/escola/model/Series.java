@@ -1,7 +1,8 @@
 package com.example.escola.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Series {
@@ -10,15 +11,20 @@ public class Series {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "serie")
-    private List<Alunos> alunos;
+    @Column(nullable = false)
+    private Integer ano;
 
-    @ManyToOne
-    @JoinColumn(name = "professor_id", nullable = false)
-    private Professores professor;
+    @ManyToMany
+    @JoinTable(
+        name = "series_professores",
+        joinColumns = @JoinColumn(name = "serie_id"),
+        inverseJoinColumns = @JoinColumn(name = "professor_id")
+    )
+    @JsonManagedReference
+    private Set<Professores> professores;
 
     public Integer getId() {
         return id;
@@ -36,19 +42,19 @@ public class Series {
         this.nome = nome;
     }
 
-    public List<Alunos> getAlunos() {
-        return alunos;
+    public Integer getAno() {
+        return ano;
     }
 
-    public void setAlunos(List<Alunos> alunos) {
-        this.alunos = alunos;
+    public void setAno(Integer ano) {
+        this.ano = ano;
     }
 
-    public Professores getProfessor() {
-        return professor;
+    public Set<Professores> getProfessores() {
+        return professores;
     }
 
-    public void setProfessor(Professores professor) {
-        this.professor = professor;
+    public void setProfessores(Set<Professores> professores) {
+        this.professores = professores;
     }
 }
