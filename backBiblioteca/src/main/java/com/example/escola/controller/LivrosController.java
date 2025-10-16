@@ -2,6 +2,7 @@ package com.example.escola.controller;
 
 import com.example.escola.dto.DevolucaoRequest;
 import com.example.escola.dto.EmprestimoRequest;
+import com.example.escola.dto.LivroEmprestadoDTO;
 import com.example.escola.model.*;
 import com.example.escola.repository.AlunosRepository;
 import com.example.escola.repository.EmprestimoRepository;
@@ -82,10 +83,10 @@ public class LivrosController {
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.setLivro(livro);
             emprestimo.setAluno(aluno);
+            emprestimo.setProfessor(professor);
             emprestimo.setDataEmprestimo(LocalDate.now());
             emprestimo.setDataDevolucao(LocalDate.now().plusDays(10));
             emprestimo.setStatus("pendente");
-
             emprestimoRepository.save(emprestimo);
 
             livro.setQuantidadeDisponivel(livro.getQuantidadeDisponivel() - 1);
@@ -103,7 +104,31 @@ public class LivrosController {
 
             return ResponseEntity.ok(Map.of(
                     "mensagem", "Empréstimo registrado com sucesso e e-mail enviado ao professor.",
-                    "emprestimo", emprestimo
+                    "emprestimo", Map.of(
+                            "id", emprestimo.getId(),
+                            "livro", Map.of(
+                                    "id", livro.getId(),
+                                    "titulolivro", livro.getTitulolivro(),
+                                    "quantidade", livro.getQuantidade(),
+                                    "quantidadeDisponivel", livro.getQuantidadeDisponivel()
+                            ),
+                            "aluno", Map.of(
+                                    "nome", aluno.getNome(),
+                                    "serie", Map.of(
+                                            "id", aluno.getSerie().getId(),
+                                            "nome", aluno.getSerie().getNome(),
+                                            "ano", aluno.getSerie().getAno()
+                                    )
+                            ),
+                            "professor", Map.of(
+                                    "id", professor.getId(),
+                                    "nome", professor.getNome(),
+                                    "email", professor.getEmail()
+                            ),
+                            "dataEmprestimo", emprestimo.getDataEmprestimo(),
+                            "dataDevolucao", emprestimo.getDataDevolucao(),
+                            "status", emprestimo.getStatus()
+                    )
             ));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -115,6 +140,8 @@ public class LivrosController {
             ));
         }
     }
+
+
 
     @PostMapping("/devolucao")
     public ResponseEntity<?> registrarDevolucao(@RequestBody DevolucaoRequest devolucaoRequest) {
@@ -139,6 +166,16 @@ public class LivrosController {
             return ResponseEntity.ok(livrosServices.listarLivros());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro ao listar livros: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/listarLivros")
+    public ResponseEntity<?> listarLivrosCadastrados() {
+        try {
+            List<Livros> livros = livrosRepository.findAll();
+            return ResponseEntity.ok(livros);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao listar livros cadastrados: " + e.getMessage());
         }
     }
 

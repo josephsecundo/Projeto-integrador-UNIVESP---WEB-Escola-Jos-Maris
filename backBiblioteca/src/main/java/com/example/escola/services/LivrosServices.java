@@ -1,5 +1,6 @@
 package com.example.escola.services;
 
+import com.example.escola.dto.LivroEmprestadoDTO;
 import com.example.escola.model.*;
 import com.example.escola.repository.AlunosRepository;
 import com.example.escola.repository.EmprestimoRepository;

@@ -1,4 +1,4 @@
-package com.example.escola.model;
+package com.example.escola.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
