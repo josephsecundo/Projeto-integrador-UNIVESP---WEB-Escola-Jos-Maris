@@ -80,17 +80,19 @@ public class LivrosServices {
         return null;
     }
 
-    public List<LivroEmprestadoDTO> listarLivrosEmprestados(){
-        Collectors Collector = null;
-        return emprestimoRepository.findAll().stream().map(emprestimo -> {
-            LivroEmprestadoDTO dto = new LivroEmprestadoDTO();
-            dto.setTituloLivro(emprestimo.getLivro().getTitulolivro());
-            dto.setNomeAluno(emprestimo.getAluno().getNome());
-            dto.setNomeProfessor(emprestimo.getAluno().getSerie().getProfessores().iterator().next().getNome());
-            dto.setStatus(emprestimo.getStatus());
-            dto.dataEmprestimo(emprestimo.getDataEmprestimo());
-            dto.dataDevolucao(emprestimo.getDataDevolucao());
-            return dto;
-        }).collect(Collector.toList());
+    public List<LivroEmprestadoDTO> listarLivrosEmprestados() {
+        List<Emprestimo> emprestimos = emprestimoRepository.findAll();
+        return emprestimos.stream()
+            .map(emprestimo -> new LivroEmprestadoDTO(
+                emprestimo.getLivro().getTitulolivro(),
+                emprestimo.getAluno().getNome(),
+                emprestimo.getDataEmprestimo(),
+                emprestimo.getDataDevolucao(),
+                emprestimo.getStatus(),
+                emprestimo.getProfessor().getNome(),
+                emprestimo.getAluno().getSerie() != null ? emprestimo.getAluno().getSerie().getNome() : null
+
+            ))
+            .toList();
     }
 }

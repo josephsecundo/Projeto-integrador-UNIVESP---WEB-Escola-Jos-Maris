@@ -22,4 +22,6 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, Integer>
     Optional<Emprestimo> findByLivroAndAlunoAndStatus(Livros livro, Alunos aluno, String status);
 
     boolean existsByLivroAndAlunoAndStatus(Livros livro, Alunos aluno, String pendente);
+
+    List<Emprestimo> findAllByStatus(String pendente);
 }

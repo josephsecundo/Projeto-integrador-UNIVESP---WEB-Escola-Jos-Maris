@@ -1,21 +1,24 @@
 package com.example.escola.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.LocalDate;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LivroEmprestadoDTO {
     private String tituloLivro;
     private String nomeAluno;
-    private String nomeProfessor;
-    private String status;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
-    public void dataEmprestimo(LocalDate dataEmprestimo) {
-    }
+    private String status;
+    private String nomeProfessor;
+    private String serieAluno;
 
-    public void dataDevolucao(LocalDate dataDevolucao) {
+    public LivroEmprestadoDTO(String tituloLivro, String nomeAluno, LocalDate dataEmprestimo, LocalDate dataDevolucao, String status, String nomeProfessor, String serieAluno) {
+        this.tituloLivro = tituloLivro;
+        this.nomeAluno = nomeAluno;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucao = dataDevolucao;
+        this.status = status;
+        this.nomeProfessor = nomeProfessor;
+        this.serieAluno = serieAluno;
     }
 
     public String getTituloLivro() {
@@ -34,22 +37,6 @@ public class LivroEmprestadoDTO {
         this.nomeAluno = nomeAluno;
     }
 
-    public String getNomeProfessor() {
-        return nomeProfessor;
-    }
-
-    public void setNomeProfessor(String nomeProfessor) {
-        this.nomeProfessor = nomeProfessor;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
     }
@@ -66,4 +53,27 @@ public class LivroEmprestadoDTO {
         this.dataDevolucao = dataDevolucao;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNomeProfessor() {
+        return nomeProfessor;
+    }
+
+    public void setNomeProfessor(String nomeProfessor) {
+        this.nomeProfessor = nomeProfessor;
+    }
+
+    public String getSerieAluno() {
+        return serieAluno;
+    }
+
+    public void setSerieAluno(String serieAluno) {
+        this.serieAluno = serieAluno;
+    }
 }
