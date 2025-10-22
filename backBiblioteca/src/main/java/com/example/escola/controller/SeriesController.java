@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +41,16 @@ public class SeriesController {
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("erro", "Erro interno: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarSeries() {
+        try {
+            List<Series> series = seriesRepository.findAll();
+            return ResponseEntity.ok(series);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("erro", "Erro ao listar séries: " + e.getMessage()));
         }
     }
 

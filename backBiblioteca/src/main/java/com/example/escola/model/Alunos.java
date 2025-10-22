@@ -45,16 +45,6 @@ public class Alunos {
     public Alunos() {
     }
 
-    public Alunos(String nome, String matricula, String email, String telefone, String endereco, LocalDate dataNascimento, Series serie) {
-        this.nome = nome;
-        this.matricula = matricula;
-        this.email = email;
-        this.telefone = telefone;
-        this.endereco = endereco;
-        this.dataNascimento = dataNascimento;
-        this.serie = serie;
-    }
-
     public Integer getId() {
         return id;
     }

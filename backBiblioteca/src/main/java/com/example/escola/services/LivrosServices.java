@@ -83,16 +83,26 @@ public class LivrosServices {
     public List<LivroEmprestadoDTO> listarLivrosEmprestados() {
         List<Emprestimo> emprestimos = emprestimoRepository.findAll();
         return emprestimos.stream()
-            .map(emprestimo -> new LivroEmprestadoDTO(
-                emprestimo.getLivro().getTitulolivro(),
-                emprestimo.getAluno().getNome(),
-                emprestimo.getDataEmprestimo(),
-                emprestimo.getDataDevolucao(),
-                emprestimo.getStatus(),
-                emprestimo.getProfessor().getNome(),
-                emprestimo.getAluno().getSerie() != null ? emprestimo.getAluno().getSerie().getNome() : null
+            .map(emprestimo -> {
+                String status = emprestimo.getStatus();
+                String tempoAtraso = null;
 
-            ))
+                if ("pendente".equals(status) && emprestimo.getDataDevolucao().isBefore(LocalDate.now())) {
+                    status = "atrasado";
+                    long diasAtraso = java.time.temporal.ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now());
+                    tempoAtraso = diasAtraso + " dias de atraso";
+                }
+
+                return new LivroEmprestadoDTO(
+                    emprestimo.getLivro().getTitulolivro(),
+                    emprestimo.getAluno().getNome(),
+                    emprestimo.getDataEmprestimo(),
+                    emprestimo.getDataDevolucao(),
+                    tempoAtraso != null ? status + " (" + tempoAtraso + ")" : status,
+                    emprestimo.getProfessor().getNome(),
+                    emprestimo.getAluno().getSerie() != null ? emprestimo.getAluno().getSerie().getNome() : null
+                );
+            })
             .toList();
     }
 }

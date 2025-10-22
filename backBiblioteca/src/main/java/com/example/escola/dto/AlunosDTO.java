@@ -1,10 +1,15 @@
 package com.example.escola.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class AlunosDTO {
     private Integer id;
     private String nome;
     private String matricula;
+
+    @NotNull(message = "Série não pode ser nula")
     private SerieDTO serie;
+
     private ProfessorDTO professor;
 
     public AlunosDTO(Integer id, String nome, String matricula, SerieDTO serie, ProfessorDTO professor) {

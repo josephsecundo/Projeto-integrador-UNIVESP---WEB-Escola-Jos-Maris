@@ -34,7 +34,7 @@ public class LivrosController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping
+    @PostMapping("/cadastrar-livro")
     public ResponseEntity<?> cadastrarLivro(@RequestBody Livros livro) {
         try {
             if (livro.getQuantidade() == null || livro.getQuantidade() < 0) {
