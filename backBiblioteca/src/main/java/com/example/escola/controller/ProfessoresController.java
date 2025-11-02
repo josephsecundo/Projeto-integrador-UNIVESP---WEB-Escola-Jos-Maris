@@ -39,4 +39,20 @@ public class ProfessoresController {
             return ResponseEntity.status(500).body("Erro ao cadastrar professor: " + e.getMessage());
         }
     }
+
+    @GetMapping("/listarPorSerie")
+    public ResponseEntity<?> listarProfessoresPorSerie(@RequestParam Integer serieId) {
+        try {
+            if (serieId == null) {
+                return ResponseEntity.badRequest().body("O parâmetro 'serieId' é obrigatório.");
+            }
+
+            var professores = professoresRepository.findProfessoresBySeriesId(serieId);
+            return ResponseEntity.ok(professores);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao listar professores: " + e.getMessage());
+        }
+    }
+
+    
 }
