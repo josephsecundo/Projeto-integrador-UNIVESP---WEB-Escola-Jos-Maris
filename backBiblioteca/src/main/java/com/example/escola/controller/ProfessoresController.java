@@ -40,6 +40,16 @@ public class ProfessoresController {
         }
     }
 
+    @GetMapping("/listarProfessores")
+    public ResponseEntity<?> listarProfessores() {
+        try {
+            var professores = professoresRepository.findAll();
+            return ResponseEntity.ok(professores);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao listar professores: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/listarPorSerie")
     public ResponseEntity<?> listarProfessoresPorSerie(@RequestParam Integer serieId) {
         try {
@@ -51,6 +61,34 @@ public class ProfessoresController {
             return ResponseEntity.ok(professores);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro ao listar professores: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarProfessor(@PathVariable Integer id, @RequestBody CadastrarProfessorRequest request) {
+        try {
+            if (request.getNome() == null || request.getNome().isEmpty()) {
+                return ResponseEntity.badRequest().body("O campo 'nome' é obrigatório.");
+            }
+            if (request.getEmail() == null || request.getEmail().isEmpty()) {
+                return ResponseEntity.badRequest().body("O campo 'email' é obrigatório.");
+            }
+
+            Professores professor = professoresRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Professor não encontrado com o ID fornecido."));
+
+            professor.setNome(request.getNome());
+            professor.setEmail(request.getEmail());
+            Professores professorAtualizado = professoresRepository.save(professor);
+
+            return ResponseEntity.ok(Map.of(
+                    "mensagem", "Professor atualizado com sucesso!",
+                    "professor", professorAtualizado
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao atualizar professor: " + e.getMessage());
         }
     }
 

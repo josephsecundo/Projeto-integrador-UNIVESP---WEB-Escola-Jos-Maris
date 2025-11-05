@@ -44,6 +44,16 @@ public class SeriesController {
         }
     }
 
+    @GetMapping("/listarSeries")
+    public ResponseEntity<?> listarSeriesCadastradas() {
+        try {
+            List<Series> series = seriesRepository.findAll();
+            return ResponseEntity.ok(series);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao listar séries: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/listar")
     public ResponseEntity<?> listarSeries() {
         try {
@@ -61,8 +71,9 @@ public class SeriesController {
                 return ResponseEntity.badRequest().body(Map.of("erro", "ID da série ou lista de IDs de professores não pode ser nulo ou vazio."));
             }
 
-            System.out.println("ID da Série: " + request.getSerieId());
-            System.out.println("IDs dos Professores: " + request.getProfessoresIds());
+            if (request.getProfessoresIds().contains(null)) {
+                return ResponseEntity.badRequest().body(Map.of("erro", "A lista de IDs de professores não pode conter valores nulos."));
+            }
 
             Series serie = seriesRepository.findById(request.getSerieId())
                     .orElseThrow(() -> new IllegalArgumentException("Série não encontrada."));
@@ -81,6 +92,34 @@ public class SeriesController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of("erro", "Erro interno ao associar professores: " + (e.getMessage() != null ? e.getMessage() : "Exceção sem mensagem")));
+        }
+    }
+
+    @DeleteMapping("/desassociar-professor")
+    public ResponseEntity<?> desassociarProfessor(@RequestParam Integer serieId, @RequestParam Integer professorId) {
+        try {
+            if (serieId == null || professorId == null) {
+                return ResponseEntity.badRequest().body(Map.of("erro", "Os parâmetros 'serieId' e 'professorId' são obrigatórios."));
+            }
+
+            Series serie = seriesRepository.findById(serieId)
+                    .orElseThrow(() -> new IllegalArgumentException("Série não encontrada com o ID fornecido."));
+
+            Professores professor = professoresRepository.findById(professorId)
+                    .orElseThrow(() -> new IllegalArgumentException("Professor não encontrado com o ID fornecido."));
+
+            if (!serie.getProfessores().contains(professor)) {
+                return ResponseEntity.badRequest().body(Map.of("erro", "O professor não está associado a esta série."));
+            }
+
+            serie.getProfessores().remove(professor);
+            seriesRepository.save(serie);
+
+            return ResponseEntity.ok(Map.of("mensagem", "Professor desassociado da série com sucesso."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("erro", "Erro interno ao desassociar professor: " + e.getMessage()));
         }
     }
 }
