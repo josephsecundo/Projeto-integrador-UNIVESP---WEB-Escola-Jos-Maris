@@ -7,7 +7,9 @@
         <groupId>com.example.escola</groupId>
         <artifactId>escola-web-site</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+
     </parent>
+
 
     <artifactId>backBiblioteca</artifactId>
 
